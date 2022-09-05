@@ -30,7 +30,9 @@ const renderpin = function (currval) {
       })
     )
 
-    .setPopupContent(`phylum_name: ${phylum_name} ${class_name}`)
+    .setPopupContent(
+      `${`<a href=${link}>phylum name: ${phylum_name}<br> class name: ${class_name} </a>`}`
+    )
     .openPopup();
 };
 if (navigator.geolocation) {
@@ -79,9 +81,18 @@ if (navigator.geolocation) {
 }
 
 btn_search.addEventListener("click", function () {
+  if (enterdata.value == "reset") {
+    location.reload();
+    enterdata.value = "";
+  }
   data.forEach(function (currval, index) {
     // if (currval["phylum_name"] == enterdata.value) {
-    if (currval["sampleid"] == enterdata.value) {
+    if (
+      currval["genus_name"] == enterdata.value ||
+      currval["sampleid"] == enterdata.value ||
+      currval["phylum_name"] == enterdata.value
+    ) {
+      // if (currval["sampleid"] == enterdata.value) {
       //   renderpin();
       console.log(currval);
       if (currval["lat"] && currval["lon"]) {
@@ -89,6 +100,7 @@ btn_search.addEventListener("click", function () {
         console.log(lat, lon);
         renderpin(currval);
       }
+      enterdata.value = "";
     }
   });
   //   if (data.includes(enterdata.value)) {
